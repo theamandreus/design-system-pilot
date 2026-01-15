@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'plan_card.dart';
+import 'ds_button.dart';
 
 void main() {
   runApp(const DesignSystemDemo());
@@ -17,37 +18,42 @@ class DesignSystemDemo extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6200EE)),
         useMaterial3: true,
       ),
-      home: const PlanCardDemo(),
+      home: const ComponentsDemo(),
     );
   }
 }
 
-class PlanCardDemo extends StatefulWidget {
-  const PlanCardDemo({super.key});
+class ComponentsDemo extends StatefulWidget {
+  const ComponentsDemo({super.key});
 
   @override
-  State<PlanCardDemo> createState() => _PlanCardDemoState();
+  State<ComponentsDemo> createState() => _ComponentsDemoState();
 }
 
-class _PlanCardDemoState extends State<PlanCardDemo> {
-  PlanCardState _currentState = PlanCardState.populated;
+class _ComponentsDemoState extends State<ComponentsDemo> {
+  // PlanCard state
+  PlanCardState _currentCardState = PlanCardState.populated;
+  final List<PlanCardState> _cardStates = PlanCardState.values;
 
-  final List<PlanCardState> _states = [
-    PlanCardState.populated,
-    PlanCardState.empty,
-    PlanCardState.loading,
-    PlanCardState.selected,
-    PlanCardState.error,
-  ];
+  // Button state
+  DSButtonVariant _currentButtonVariant = DSButtonVariant.filled;
 
-  void _cycleState() {
+  void _cycleCardState() {
     setState(() {
-      final currentIndex = _states.indexOf(_currentState);
-      _currentState = _states[(currentIndex + 1) % _states.length];
+      final currentIndex = _cardStates.indexOf(_currentCardState);
+      _currentCardState = _cardStates[(currentIndex + 1) % _cardStates.length];
     });
   }
 
-  String _getStateName(PlanCardState state) {
+  void _cycleButtonVariant() {
+    setState(() {
+      _currentButtonVariant = _currentButtonVariant == DSButtonVariant.filled
+          ? DSButtonVariant.outlined
+          : DSButtonVariant.filled;
+    });
+  }
+
+  String _getCardStateName(PlanCardState state) {
     switch (state) {
       case PlanCardState.populated:
         return 'Populated';
@@ -62,87 +68,168 @@ class _PlanCardDemoState extends State<PlanCardDemo> {
     }
   }
 
+  String _getButtonVariantName(DSButtonVariant variant) {
+    return variant == DSButtonVariant.filled ? 'Filled' : 'Outlined';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        title: const Text('PlanCard Component'),
+        title: const Text('Design System Pilot'),
         backgroundColor: const Color(0xFF6200EE),
         foregroundColor: Colors.white,
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF6200EE).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'State: ${_getStateName(_currentState)}',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF6200EE),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // PlanCard Section
+            _buildSectionHeader('PlanCard'),
+            const SizedBox(height: 16),
+            Center(
+              child: Column(
+                children: [
+                  _buildStateBadge(_getCardStateName(_currentCardState)),
+                  const SizedBox(height: 16),
+                  PlanCard(
+                    state: _currentCardState,
+                    title: 'Hybrid Fund',
+                    amount: '₹12,450.00',
+                    subtitle: '+12.4% returns this year',
+                    onTap: _cycleCardState,
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  _buildChipSelector<PlanCardState>(
+                    items: _cardStates,
+                    selected: _currentCardState,
+                    labelBuilder: _getCardStateName,
+                    onSelect: (state) => setState(() => _currentCardState = state),
+                  ),
+                ],
               ),
-              const SizedBox(height: 24),
-              PlanCard(
-                state: _currentState,
-                title: 'Hybrid Fund',
-                amount: '₹12,450.00',
-                subtitle: '+12.4% returns this year',
-                onTap: _cycleState,
+            ),
+            
+            const SizedBox(height: 48),
+            
+            // Button Section
+            _buildSectionHeader('Button'),
+            const SizedBox(height: 16),
+            Center(
+              child: Column(
+                children: [
+                  _buildStateBadge(_getButtonVariantName(_currentButtonVariant)),
+                  const SizedBox(height: 16),
+                  DSButton(
+                    label: 'Button Label',
+                    variant: _currentButtonVariant,
+                    onTap: _cycleButtonVariant,
+                  ),
+                  const SizedBox(height: 16),
+                  _buildChipSelector<DSButtonVariant>(
+                    items: DSButtonVariant.values,
+                    selected: _currentButtonVariant,
+                    labelBuilder: _getButtonVariantName,
+                    onSelect: (variant) => setState(() => _currentButtonVariant = variant),
+                  ),
+                ],
               ),
-              const SizedBox(height: 32),
-              const Text(
-                'Tap the card to cycle through states',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF6B6B6B),
-                ),
+            ),
+            
+            const SizedBox(height: 48),
+            
+            // All Button Variants
+            _buildSectionHeader('All Button Variants'),
+            const SizedBox(height: 16),
+            Center(
+              child: Column(
+                children: [
+                  DSButton(
+                    label: 'Filled Button',
+                    variant: DSButtonVariant.filled,
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 12),
+                  DSButton(
+                    label: 'Outlined Button',
+                    variant: DSButtonVariant.outlined,
+                    onTap: () {},
+                  ),
+                ],
               ),
-              const SizedBox(height: 24),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                alignment: WrapAlignment.center,
-                children: _states.map((state) {
-                  final isActive = state == _currentState;
-                  return GestureDetector(
-                    onTap: () => setState(() => _currentState = state),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: isActive ? const Color(0xFF6200EE) : Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xFF6200EE),
-                          width: 1,
-                        ),
-                      ),
-                      child: Text(
-                        _getStateName(state),
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: isActive ? Colors.white : const Color(0xFF6200EE),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Color(0xFF1C1B1F),
+      ),
+    );
+  }
+
+  Widget _buildStateBadge(String label) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF6200EE).withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF6200EE),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChipSelector<T>({
+    required List<T> items,
+    required T selected,
+    required String Function(T) labelBuilder,
+    required void Function(T) onSelect,
+  }) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      alignment: WrapAlignment.center,
+      children: items.map((item) {
+        final isActive = item == selected;
+        return GestureDetector(
+          onTap: () => onSelect(item),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: isActive ? const Color(0xFF6200EE) : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: const Color(0xFF6200EE),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              labelBuilder(item),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: isActive ? Colors.white : const Color(0xFF6200EE),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }
