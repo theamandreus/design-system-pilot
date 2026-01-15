@@ -30,7 +30,37 @@ class PlanCardDemo extends StatefulWidget {
 }
 
 class _PlanCardDemoState extends State<PlanCardDemo> {
-  int _selectedIndex = -1;
+  PlanCardState _currentState = PlanCardState.populated;
+
+  final List<PlanCardState> _states = [
+    PlanCardState.populated,
+    PlanCardState.empty,
+    PlanCardState.loading,
+    PlanCardState.selected,
+    PlanCardState.error,
+  ];
+
+  void _cycleState() {
+    setState(() {
+      final currentIndex = _states.indexOf(_currentState);
+      _currentState = _states[(currentIndex + 1) % _states.length];
+    });
+  }
+
+  String _getStateName(PlanCardState state) {
+    switch (state) {
+      case PlanCardState.populated:
+        return 'Populated';
+      case PlanCardState.empty:
+        return 'Empty';
+      case PlanCardState.loading:
+        return 'Loading';
+      case PlanCardState.selected:
+        return 'Selected';
+      case PlanCardState.error:
+        return 'Error';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,75 +71,77 @@ class _PlanCardDemoState extends State<PlanCardDemo> {
         backgroundColor: const Color(0xFF6200EE),
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSection(
-              'Populated State',
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF6200EE).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  'State: ${_getStateName(_currentState)}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF6200EE),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
               PlanCard(
-                state: _selectedIndex == 0
-                    ? PlanCardState.selected
-                    : PlanCardState.populated,
-                title: 'Equity Growth Fund',
-                amount: '₹25,000.00',
-                subtitle: '+18.2% returns this year',
-                onTap: () => setState(() => _selectedIndex = 0),
+                state: _currentState,
+                title: 'Hybrid Fund',
+                amount: '₹12,450.00',
+                subtitle: '+12.4% returns this year',
+                onTap: _cycleState,
               ),
-            ),
-            _buildSection(
-              'Empty State',
-              const PlanCard(
-                state: PlanCardState.empty,
+              const SizedBox(height: 32),
+              const Text(
+                'Tap the card to cycle through states',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF6B6B6B),
+                ),
               ),
-            ),
-            _buildSection(
-              'Loading State',
-              const PlanCard(
-                state: PlanCardState.loading,
+              const SizedBox(height: 24),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                alignment: WrapAlignment.center,
+                children: _states.map((state) {
+                  final isActive = state == _currentState;
+                  return GestureDetector(
+                    onTap: () => setState(() => _currentState = state),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: isActive ? const Color(0xFF6200EE) : Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFF6200EE),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        _getStateName(state),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: isActive ? Colors.white : const Color(0xFF6200EE),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
-            ),
-            _buildSection(
-              'Selected State',
-              const PlanCard(
-                state: PlanCardState.selected,
-                title: 'Debt Fund',
-                amount: '₹50,000.00',
-                subtitle: '+8.5% returns this year',
-              ),
-            ),
-            _buildSection(
-              'Error State',
-              const PlanCard(
-                state: PlanCardState.error,
-                title: 'Index Fund',
-                amount: '₹15,000.00',
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSection(String title, Widget child) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 32),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF6B6B6B),
-            ),
+            ],
           ),
-          const SizedBox(height: 12),
-          child,
-        ],
+        ),
       ),
     );
   }
