@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ds_button.dart';
 
 /// PlanCard state enumeration
 enum PlanCardState {
@@ -19,7 +20,9 @@ class PlanCard extends StatelessWidget {
   final String? title;
   final String? amount;
   final String? subtitle;
+  final String? buttonLabel;
   final VoidCallback? onTap;
+  final VoidCallback? onButtonTap;
 
   const PlanCard({
     super.key,
@@ -27,7 +30,9 @@ class PlanCard extends StatelessWidget {
     this.title,
     this.amount,
     this.subtitle,
+    this.buttonLabel,
     this.onTap,
+    this.onButtonTap,
   });
 
   // Design tokens from Figma
@@ -132,6 +137,13 @@ class PlanCard extends StatelessWidget {
             height: 1.428,
             color: _textSecondary,
           ),
+        ),
+        const SizedBox(height: _gap),
+        DSButton(
+          label: buttonLabel ?? 'Button Label',
+          variant: DSButtonVariant.outlined,
+          width: 288,
+          onTap: onButtonTap,
         ),
       ],
     );
