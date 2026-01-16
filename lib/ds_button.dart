@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 enum DSButtonVariant {
   filled,
   outlined,
+  destructive,
 }
 
 /// Button component from Design System
 ///
-/// A customizable button with filled and outlined variants.
+/// A customizable button with filled, outlined, and destructive variants.
 ///
 /// Figma: https://www.figma.com/design/cmgj79bpLI0KBt9mpl5oJb/Design-System---Pilot?node-id=19-10
 class DSButton extends StatelessWidget {
@@ -35,6 +36,8 @@ class DSButton extends StatelessWidget {
   static const _primaryColor = Color(0xFF6200EE);
   static const _textLight = Color(0xFFFFFFFF);
   static const _borderColor = Color(0xFFE0E0E0);
+  static const _destructiveBg = Color(0xFFF5F5F5);
+  static const _destructiveColor = Color(0xFFB3261E);
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +48,9 @@ class DSButton extends StatelessWidget {
         height: _height,
         padding: const EdgeInsets.all(_padding),
         decoration: BoxDecoration(
-          color: variant == DSButtonVariant.filled ? _primaryColor : Colors.transparent,
+          color: _getBackgroundColor(),
           borderRadius: BorderRadius.circular(_borderRadius),
-          border: variant == DSButtonVariant.outlined
-              ? Border.all(color: _borderColor, width: 1)
-              : null,
+          border: _getBorder(),
         ),
         alignment: Alignment.center,
         child: Text(
@@ -59,10 +60,43 @@ class DSButton extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontSize: 16,
             height: 1.125,
-            color: variant == DSButtonVariant.filled ? _textLight : _primaryColor,
+            color: _getTextColor(),
           ),
         ),
       ),
     );
+  }
+
+  Color _getBackgroundColor() {
+    switch (variant) {
+      case DSButtonVariant.filled:
+        return _primaryColor;
+      case DSButtonVariant.outlined:
+        return Colors.transparent;
+      case DSButtonVariant.destructive:
+        return _destructiveBg;
+    }
+  }
+
+  Border? _getBorder() {
+    switch (variant) {
+      case DSButtonVariant.filled:
+        return null;
+      case DSButtonVariant.outlined:
+        return Border.all(color: _borderColor, width: 1);
+      case DSButtonVariant.destructive:
+        return Border.all(color: _destructiveColor, width: 1);
+    }
+  }
+
+  Color _getTextColor() {
+    switch (variant) {
+      case DSButtonVariant.filled:
+        return _textLight;
+      case DSButtonVariant.outlined:
+        return _primaryColor;
+      case DSButtonVariant.destructive:
+        return _destructiveColor;
+    }
   }
 }

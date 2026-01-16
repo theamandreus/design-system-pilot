@@ -47,9 +47,9 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
 
   void _cycleButtonVariant() {
     setState(() {
-      _currentButtonVariant = _currentButtonVariant == DSButtonVariant.filled
-          ? DSButtonVariant.outlined
-          : DSButtonVariant.filled;
+      final variants = DSButtonVariant.values;
+      final currentIndex = variants.indexOf(_currentButtonVariant);
+      _currentButtonVariant = variants[(currentIndex + 1) % variants.length];
     });
   }
 
@@ -69,7 +69,14 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
   }
 
   String _getButtonVariantName(DSButtonVariant variant) {
-    return variant == DSButtonVariant.filled ? 'Filled' : 'Outlined';
+    switch (variant) {
+      case DSButtonVariant.filled:
+        return 'Filled';
+      case DSButtonVariant.outlined:
+        return 'Outlined';
+      case DSButtonVariant.destructive:
+        return 'Destructive';
+    }
   }
 
   @override
@@ -155,6 +162,12 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                   DSButton(
                     label: 'Outlined Button',
                     variant: DSButtonVariant.outlined,
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 12),
+                  DSButton(
+                    label: 'Destructive Button',
+                    variant: DSButtonVariant.destructive,
                     onTap: () {},
                   ),
                 ],
