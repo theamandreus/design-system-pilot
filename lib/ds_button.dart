@@ -5,11 +5,12 @@ enum DSButtonVariant {
   filled,
   outlined,
   destructive,
+  inactive,
 }
 
 /// Button component from Design System
 ///
-/// A customizable button with filled, outlined, and destructive variants.
+/// A customizable button with filled, outlined, destructive, and inactive variants.
 ///
 /// Figma: https://www.figma.com/design/cmgj79bpLI0KBt9mpl5oJb/Design-System---Pilot?node-id=19-10
 class DSButton extends StatelessWidget {
@@ -38,11 +39,15 @@ class DSButton extends StatelessWidget {
   static const _borderColor = Color(0xFFE0E0E0);
   static const _destructiveBg = Color(0xFFF5F5F5);
   static const _destructiveColor = Color(0xFFB3261E);
+  static const _inactiveColor = Color(0xFF6B6B6B);
+  static const _inactiveTextColor = Color(0xFFE0E0E0);
 
   @override
   Widget build(BuildContext context) {
+    final isInactive = variant == DSButtonVariant.inactive;
+    
     return GestureDetector(
-      onTap: onTap,
+      onTap: isInactive ? null : onTap,
       child: Container(
         width: width ?? _defaultWidth,
         height: _height,
@@ -75,6 +80,8 @@ class DSButton extends StatelessWidget {
         return Colors.transparent;
       case DSButtonVariant.destructive:
         return _destructiveBg;
+      case DSButtonVariant.inactive:
+        return _inactiveColor;
     }
   }
 
@@ -86,6 +93,8 @@ class DSButton extends StatelessWidget {
         return Border.all(color: _borderColor, width: 1);
       case DSButtonVariant.destructive:
         return Border.all(color: _destructiveColor, width: 1);
+      case DSButtonVariant.inactive:
+        return Border.all(color: _inactiveColor, width: 1);
     }
   }
 
@@ -97,6 +106,8 @@ class DSButton extends StatelessWidget {
         return _primaryColor;
       case DSButtonVariant.destructive:
         return _destructiveColor;
+      case DSButtonVariant.inactive:
+        return _inactiveTextColor;
     }
   }
 }
