@@ -76,6 +76,8 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
         return 'Outlined';
       case DSButtonVariant.destructive:
         return 'Destructive';
+      case DSButtonVariant.inactive:
+        return 'Inactive';
     }
   }
 
@@ -168,6 +170,12 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                   DSButton(
                     label: 'Destructive Button',
                     variant: DSButtonVariant.destructive,
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 12),
+                  DSButton(
+                    label: 'Inactive Button',
+                    variant: DSButtonVariant.inactive,
                     onTap: () {},
                   ),
                 ],
