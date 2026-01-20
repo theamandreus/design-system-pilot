@@ -8,6 +8,7 @@ enum PlanCardState {
   loading,
   selected,
   error,
+  success,
 }
 
 /// PlanCard component from Design System
@@ -49,6 +50,7 @@ class PlanCard extends StatelessWidget {
   static const _textPrimary = Color(0xFF1C1B1F);
   static const _textSecondary = Color(0xFF6B6B6B);
   static const _textError = Color(0xFFB3261E);
+  static const _textSuccess = Color(0xFF6200EE);
   static const _skeletonColor = Color(0xFFE0E0E0);
 
   @override
@@ -95,6 +97,8 @@ class PlanCard extends StatelessWidget {
         return _buildEmptyState();
       case PlanCardState.error:
         return _buildErrorState();
+      case PlanCardState.success:
+        return _buildSuccessState();
       case PlanCardState.populated:
       case PlanCardState.selected:
         return _buildPopulatedState();
@@ -260,6 +264,47 @@ class PlanCard extends StatelessWidget {
             fontSize: 14,
             height: 1.428,
             color: _textError,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSuccessState() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title ?? 'Hybrid Fund',
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 1.125,
+            color: _textPrimary,
+          ),
+        ),
+        const SizedBox(height: _gap),
+        Text(
+          amount ?? '₹12,450.00',
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+            height: 1.208,
+            color: _textPrimary,
+          ),
+        ),
+        const SizedBox(height: _gap),
+        Text(
+          subtitle ?? 'Wow ! You made Profit',
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 1.428,
+            color: _textSuccess,
           ),
         ),
       ],
