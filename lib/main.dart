@@ -65,6 +65,8 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
         return 'Selected';
       case PlanCardState.error:
         return 'Error';
+      case PlanCardState.success:
+        return 'Success';
     }
   }
 
@@ -107,7 +109,9 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                     state: _currentCardState,
                     title: 'Hybrid Fund',
                     amount: '₹12,450.00',
-                    subtitle: '+12.4% returns this year',
+                    subtitle: _currentCardState == PlanCardState.success 
+                        ? 'Wow ! You made Profit' 
+                        : '+12.4% returns this year',
                     onTap: _cycleCardState,
                   ),
                   const SizedBox(height: 16),
