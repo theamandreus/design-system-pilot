@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import '../ds_button.dart';
 
 /// Success Screen from Design System
+/// 
+/// Icon specs from Figma (node 64:7):
+/// - Size: 80x80px
+/// - Circle: #198754 (green)
+/// - Checkmark: #FFFFFF, 3px stroke
 class SuccessScreen extends StatelessWidget {
   final VoidCallback? onButtonTap;
 
@@ -10,12 +15,12 @@ class SuccessScreen extends StatelessWidget {
     this.onButtonTap,
   });
 
-  // Colors
+  // Colors from Figma
   static const _bgColor = Color(0xFFF5F5F5);
   static const _bottomBarColor = Color(0xFFFFFFFF);
   static const _textPrimary = Color(0xFF1C1B1F);
   static const _textSecondary = Color(0xFF6B6B6B);
-  static const _successColor = Color(0xFF6200EE);
+  static const _successColor = Color(0xFF198754); // Green from Figma
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +36,18 @@ class SuccessScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Success Icon
+                    // Success Icon from Figma (80x80)
                     Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: _successColor.withOpacity(0.1),
+                      width: 80,
+                      height: 80,
+                      decoration: const BoxDecoration(
+                        color: _successColor,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.check_circle,
-                        size: 64,
-                        color: _successColor,
+                        Icons.check,
+                        size: 40,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 32),
