@@ -3,6 +3,7 @@ import 'plan_card.dart';
 import 'ds_button.dart';
 import 'screens/verify_otp_screen.dart';
 import 'screens/success_screen.dart';
+import 'themes/themes.dart';
 
 void main() {
   runApp(const DesignSystemDemo());
@@ -13,14 +14,22 @@ class DesignSystemDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Design System Pilot',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6200EE)),
-        useMaterial3: true,
+    return ThemeManager(
+      initialTheme: ThemeType.pilot,
+      child: Builder(
+        builder: (context) {
+          final theme = context.appTheme;
+          return MaterialApp(
+            title: 'Design System Pilot',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: theme.primary),
+              useMaterial3: true,
+            ),
+            home: const MainNavigation(),
+          );
+        },
       ),
-      home: const MainNavigation(),
     );
   }
 }
@@ -51,6 +60,8 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.appTheme;
+    
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -69,7 +80,7 @@ class _MainNavigationState extends State<MainNavigation> {
             _showSuccess = false;
           }
         }),
-        selectedItemColor: const Color(0xFF6200EE),
+        selectedItemColor: theme.primary,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.widgets_outlined),
@@ -151,25 +162,99 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.appTheme;
+    final currentThemeType = context.themeType;
+    
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: theme.background,
       appBar: AppBar(
-        title: const Text('Design System Pilot'),
-        backgroundColor: const Color(0xFF6200EE),
-        foregroundColor: Colors.white,
+        title: Text('${theme.name} Design System'),
+        backgroundColor: theme.primary,
+        foregroundColor: theme.onPrimary,
+        actions: [
+          // Theme Switcher
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: SegmentedButton<ThemeType>(
+              segments: const [
+                ButtonSegment(
+                  value: ThemeType.pilot,
+                  label: Text('Pilot', style: TextStyle(fontSize: 11)),
+                ),
+                ButtonSegment(
+                  value: ThemeType.keystone,
+                  label: Text('Keystone', style: TextStyle(fontSize: 11)),
+                ),
+              ],
+              selected: {currentThemeType},
+              onSelectionChanged: (selected) {
+                context.setTheme(selected.first);
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return theme.onPrimary;
+                  }
+                  return theme.primary;
+                }),
+                foregroundColor: WidgetStateProperty.resolveWith((states) {
+                  if (states.contains(WidgetState.selected)) {
+                    return theme.primary;
+                  }
+                  return theme.onPrimary;
+                }),
+                side: WidgetStateProperty.all(
+                  BorderSide(color: theme.onPrimary.withOpacity(0.3)),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Theme Info Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.only(bottom: 24),
+              decoration: BoxDecoration(
+                color: theme.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.border),
+                boxShadow: [theme.cardShadow],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Current Theme: ${theme.name}',
+                    style: theme.headlineBold.copyWith(color: theme.textPrimary),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      _buildColorDot(theme.primary, 'Primary'),
+                      const SizedBox(width: 16),
+                      _buildColorDot(theme.success, 'Success'),
+                      const SizedBox(width: 16),
+                      _buildColorDot(theme.error, 'Error'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            
             // PlanCard Section
-            _buildSectionHeader('PlanCard'),
+            _buildSectionHeader('PlanCard', theme),
             const SizedBox(height: 16),
             Center(
               child: Column(
                 children: [
-                  _buildStateBadge(_getCardStateName(_currentCardState)),
+                  _buildStateBadge(_getCardStateName(_currentCardState), theme),
                   const SizedBox(height: 16),
                   PlanCard(
                     state: _currentCardState,
@@ -184,6 +269,7 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                     selected: _currentCardState,
                     labelBuilder: _getCardStateName,
                     onSelect: (state) => setState(() => _currentCardState = state),
+                    theme: theme,
                   ),
                 ],
               ),
@@ -192,12 +278,12 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
             const SizedBox(height: 48),
             
             // Button Section
-            _buildSectionHeader('Button'),
+            _buildSectionHeader('Button', theme),
             const SizedBox(height: 16),
             Center(
               child: Column(
                 children: [
-                  _buildStateBadge(_getButtonVariantName(_currentButtonVariant)),
+                  _buildStateBadge(_getButtonVariantName(_currentButtonVariant), theme),
                   const SizedBox(height: 16),
                   DSButton(
                     label: 'Button Label',
@@ -210,6 +296,7 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                     selected: _currentButtonVariant,
                     labelBuilder: _getButtonVariantName,
                     onSelect: (variant) => setState(() => _currentButtonVariant = variant),
+                    theme: theme,
                   ),
                 ],
               ),
@@ -218,7 +305,7 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
             const SizedBox(height: 48),
             
             // All Button Variants
-            _buildSectionHeader('All Button Variants'),
+            _buildSectionHeader('All Button Variants', theme),
             const SizedBox(height: 16),
             Center(
               child: Column(
@@ -255,31 +342,40 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        color: Color(0xFF1C1B1F),
-      ),
+  Widget _buildColorDot(Color color, String label) {
+    return Row(
+      children: [
+        Container(
+          width: 16,
+          height: 16,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 4),
+        Text(label, style: const TextStyle(fontSize: 12)),
+      ],
     );
   }
 
-  Widget _buildStateBadge(String label) {
+  Widget _buildSectionHeader(String title, AppTheme theme) {
+    return Text(
+      title,
+      style: theme.h2.copyWith(color: theme.textPrimary),
+    );
+  }
+
+  Widget _buildStateBadge(String label, AppTheme theme) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF6200EE).withOpacity(0.1),
+        color: theme.primaryLight,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF6200EE),
-        ),
+        style: theme.subtitleBold.copyWith(color: theme.primary),
       ),
     );
   }
@@ -289,6 +385,7 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
     required T selected,
     required String Function(T) labelBuilder,
     required void Function(T) onSelect,
+    required AppTheme theme,
   }) {
     return Wrap(
       spacing: 8,
@@ -301,19 +398,17 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: isActive ? const Color(0xFF6200EE) : Colors.white,
+              color: isActive ? theme.primary : theme.surface,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: const Color(0xFF6200EE),
+                color: theme.primary,
                 width: 1,
               ),
             ),
             child: Text(
               labelBuilder(item),
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: isActive ? Colors.white : const Color(0xFF6200EE),
+              style: theme.bodyMedium.copyWith(
+                color: isActive ? theme.onPrimary : theme.primary,
               ),
             ),
           ),
