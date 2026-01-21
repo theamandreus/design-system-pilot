@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'plan_card.dart';
 import 'ds_button.dart';
 import 'screens/verify_otp_screen.dart';
+import 'screens/success_screen.dart';
 
 void main() {
   runApp(const DesignSystemDemo());
@@ -33,6 +34,20 @@ class MainNavigation extends StatefulWidget {
 
 class _MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
+  bool _showSuccess = false;
+
+  void _onVerifyTap() {
+    setState(() {
+      _showSuccess = true;
+    });
+  }
+
+  void _onGoToDashboard() {
+    setState(() {
+      _showSuccess = false;
+      _currentIndex = 0;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +56,19 @@ class _MainNavigationState extends State<MainNavigation> {
         index: _currentIndex,
         children: [
           const ComponentsDemo(),
-          VerifyOtpScreen(
-            onPrimaryButtonTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Verify Now tapped!')),
-              );
-            },
-          ),
+          _showSuccess
+              ? SuccessScreen(onButtonTap: _onGoToDashboard)
+              : VerifyOtpScreen(onPrimaryButtonTap: _onVerifyTap),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
+        onTap: (index) => setState(() {
+          _currentIndex = index;
+          if (index == 1) {
+            _showSuccess = false;
+          }
+        }),
         selectedItemColor: const Color(0xFF6200EE),
         items: const [
           BottomNavigationBarItem(
