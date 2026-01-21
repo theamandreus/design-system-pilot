@@ -87,7 +87,7 @@ class VerifyOtpScreen extends StatelessWidget {
             color: _topBarColor,
             child: DSButton(
               label: 'Button Label',
-              variant: DSButtonVariant.outlined,
+              variant: DSButtonVariant.filled,
               width: double.infinity,
               onTap: onButtonTap,
             ),
