@@ -18,6 +18,7 @@ class DSButton extends StatelessWidget {
   final DSButtonVariant variant;
   final VoidCallback? onTap;
   final double? width;
+  final double? borderRadius;
 
   const DSButton({
     super.key,
@@ -25,12 +26,13 @@ class DSButton extends StatelessWidget {
     this.variant = DSButtonVariant.filled,
     this.onTap,
     this.width,
+    this.borderRadius,
   });
 
   // Design tokens from Figma
   static const _defaultWidth = 288.0;
   static const _height = 48.0;
-  static const _borderRadius = 4.0;
+  static const _defaultBorderRadius = 4.0;
   static const _padding = 8.0;
 
   // Colors
@@ -54,7 +56,7 @@ class DSButton extends StatelessWidget {
         padding: const EdgeInsets.all(_padding),
         decoration: BoxDecoration(
           color: _getBackgroundColor(),
-          borderRadius: BorderRadius.circular(_borderRadius),
+          borderRadius: BorderRadius.circular(borderRadius ?? _defaultBorderRadius),
           border: _getBorder(),
         ),
         alignment: Alignment.center,
