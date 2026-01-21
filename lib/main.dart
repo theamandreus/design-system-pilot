@@ -3,6 +3,7 @@ import 'plan_card.dart';
 import 'ds_button.dart';
 import 'screens/verify_otp_screen.dart';
 import 'screens/success_screen.dart';
+import 'screens/invest_now_screen.dart';
 import 'themes/themes.dart';
 
 void main() {
@@ -70,6 +71,11 @@ class _MainNavigationState extends State<MainNavigation> {
           _showSuccess
               ? SuccessScreen(onButtonTap: _onGoToDashboard)
               : VerifyOtpScreen(onPrimaryButtonTap: _onVerifyTap),
+          InvestNowScreen(
+            onBackTap: () => setState(() => _currentIndex = 0),
+            onAddFundsTap: () {},
+            onNeedHelpTap: () {},
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -91,6 +97,11 @@ class _MainNavigationState extends State<MainNavigation> {
             icon: Icon(Icons.phone_android_outlined),
             activeIcon: Icon(Icons.phone_android),
             label: 'Screens',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            activeIcon: Icon(Icons.account_balance_wallet),
+            label: 'Invest',
           ),
         ],
       ),
