@@ -43,7 +43,7 @@ class VerifyOtpScreen extends StatelessWidget {
           
           // Content Container
           Expanded(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,7 @@ class VerifyOtpScreen extends StatelessWidget {
                   
                   const SizedBox(height: 24),
                   
-                  // PlanCard
+                  // PlanCard 1
                   const Center(
                     child: PlanCard(
                       state: PlanCardState.populated,
@@ -87,7 +87,17 @@ class VerifyOtpScreen extends StatelessWidget {
                     ),
                   ),
                   
-                  const Spacer(),
+                  const SizedBox(height: 16),
+                  
+                  // PlanCard 2
+                  const Center(
+                    child: PlanCard(
+                      state: PlanCardState.populated,
+                      title: 'Moderate Fund',
+                      amount: '₹8,250.00',
+                      subtitle: '+9.2% returns this year',
+                    ),
+                  ),
                 ],
               ),
             ),
