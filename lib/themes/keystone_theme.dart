@@ -3,263 +3,334 @@ import 'app_theme.dart';
 
 /// Keystone 2025 Design System
 /// MarketFeed's new design language
+/// 
+/// Tokens extracted from Figma Variables:
+/// - primitives.tokens.json (spacing, radius, border)
+/// - colors.tokens.json (brand, semantic, neutral)
+/// - Mode_1.tokens.json (typography)
 class KeystoneTheme extends AppTheme {
   @override
   String get name => 'Keystone';
 
   // ============================================
-  // BRAND COLORS
+  // BRAND COLORS (from colors.tokens.json)
   // ============================================
   
-  /// MF Blue - Primary brand color
-  static const mfBlue = Color(0xFF2554D4);
+  /// brand-blue: #2554D4
+  static const brandBlue = Color(0xFF2554D4);
   
-  /// MF Yellow - Accent/highlight
-  static const mfYellow = Color(0xFFFFC400);
+  /// brand-yellow: #FFC400
+  static const brandYellow = Color(0xFFFFC400);
   
-  /// MF Blue 10% - Loading states, light backgrounds
-  static final mfBlue10 = mfBlue.withOpacity(0.1);
+  /// brand-blue-10: 10% opacity
+  static final brandBlue10 = brandBlue.withOpacity(0.1);
   
-  /// MF Yellow 10%
-  static final mfYellow10 = mfYellow.withOpacity(0.1);
+  /// brand-yellow-10: 10% opacity
+  static final brandYellow10 = brandYellow.withOpacity(0.1);
 
   // ============================================
-  // SEMANTIC COLORS
+  // SEMANTIC COLORS (from colors.tokens.json)
   // ============================================
   
-  /// MF Green - Success states
-  static const mfGreen = Color(0xFF34A853);
-  static final mfGreen10 = mfGreen.withOpacity(0.1);
+  /// green: #34A853
+  static const green = Color(0xFF34A853);
+  static final green10 = green.withOpacity(0.1);
   
-  /// MF Red - Error states
-  static const mfRed = Color(0xFFEA4335);
-  static final mfRed10 = mfRed.withOpacity(0.1);
+  /// red: #EA4335
+  static const red = Color(0xFFEA4335);
+  static final red10 = red.withOpacity(0.1);
   
-  /// MF Orange - Warning states
-  static const mfOrange = Color(0xFFFF9B05);
-  static final mfOrange10 = mfOrange.withOpacity(0.1);
+  /// orange: #FF9B05
+  static const orange = Color(0xFFFF9B05);
+  static final orange10 = orange.withOpacity(0.1);
 
   // ============================================
-  // NEUTRAL COLORS
+  // NEUTRAL COLORS (from colors.tokens.json)
   // ============================================
   
-  /// MF Black - Primary text
-  static const mfBlack = Color(0xFF081433);
+  /// black: #081433
+  static const black = Color(0xFF081433);
   
-  /// MF White - Backgrounds
-  static const mfWhite = Color(0xFFFFFFFF);
+  /// white: #FFFFFF
+  static const white = Color(0xFFFFFFFF);
   
-  /// MF Grey - Secondary text (60% black)
-  static final mfGrey = mfBlack.withOpacity(0.6);
+  /// grey: #6B7285
+  static const grey = Color(0xFF6B7285);
   
-  /// MF Light Grey - Borders (10% black)
-  static final mfLightGrey = mfBlack.withOpacity(0.1);
+  /// grey-50: 50% opacity
+  static final grey50 = grey.withOpacity(0.5);
   
-  /// MF Soft Grey - Surface variant (4% black)
-  static final mfSoftGrey = mfBlack.withOpacity(0.04);
+  /// light-grey: #E6E7EB
+  static const lightGrey = Color(0xFFE6E7EB);
   
-  /// MF Disabled - Disabled states (50% black)
-  static final mfDisabled = mfBlack.withOpacity(0.5);
-  
-  /// MF G-BG - Gradient background
-  static const mfGBG = Color(0xFFF5F6F7);
+  /// soft-grey: #F5F6F7
+  static const softGrey = Color(0xFFF5F6F7);
 
   // ============================================
   // THEME IMPLEMENTATION
   // ============================================
 
-  // Colors - Primary
   @override
-  Color get primary => mfBlue;
+  Color get primary => brandBlue;
   @override
-  Color get primaryLight => mfBlue10;
+  Color get primaryLight => brandBlue10;
   @override
-  Color get onPrimary => mfWhite;
+  Color get onPrimary => white;
 
-  // Colors - Semantic
   @override
-  Color get success => mfGreen;
+  Color get success => green;
   @override
-  Color get successLight => mfGreen10;
+  Color get successLight => green10;
   @override
-  Color get error => mfRed;
+  Color get error => red;
   @override
-  Color get errorLight => mfRed10;
+  Color get errorLight => red10;
   @override
-  Color get warning => mfOrange;
+  Color get warning => orange;
   @override
-  Color get warningLight => mfOrange10;
+  Color get warningLight => orange10;
 
-  // Colors - Neutral
   @override
-  Color get background => mfGBG;
+  Color get background => softGrey;
   @override
-  Color get surface => mfWhite;
+  Color get surface => white;
   @override
-  Color get surfaceVariant => mfSoftGrey;
+  Color get surfaceVariant => softGrey;
   @override
-  Color get textPrimary => mfBlack;
+  Color get textPrimary => black;
   @override
-  Color get textSecondary => mfGrey;
+  Color get textSecondary => grey;
   @override
-  Color get textDisabled => mfDisabled;
+  Color get textDisabled => grey50;
   @override
-  Color get border => mfLightGrey;
+  Color get border => lightGrey;
   @override
-  Color get borderLight => mfSoftGrey;
+  Color get borderLight => softGrey;
 
   // ============================================
-  // TYPOGRAPHY - Satoshi Variable
+  // SPACING (from primitives.tokens.json)
+  // spacing-xxxs: 2, xxs: 4, xs: 8, sm: 12, 
+  // md: 16, lg: 20, xl: 24, 2xl: 32, 
+  // 3xl: 40, 4xl: 48, 5xl: 64
   // ============================================
+  
+  static const double spacingXXXS = 2;
+  static const double spacingXXS = 4;
+  static const double spacingXSVal = 8;
+  static const double spacingSMVal = 12;
+  static const double spacingMDVal = 16;
+  static const double spacingLGVal = 20;
+  static const double spacingXLVal = 24;
+  static const double spacing2XL = 32;
+  static const double spacing3XL = 40;
+  static const double spacing4XL = 48;
+  static const double spacing5XL = 64;
+  
+  @override
+  double get spacingXS => spacingXXS; // 4
+  @override
+  double get spacingSM => spacingXSVal; // 8
+  @override
+  double get spacingMD => spacingMDVal; // 16
+  @override
+  double get spacingLG => spacingXLVal; // 24
+  @override
+  double get spacingXL => spacing2XL; // 32
+
+  // ============================================
+  // RADIUS (from primitives.tokens.json)
+  // radius-xs: 4, sm: 8, md: 12, lg: 16, xl: 20, full: 999
+  // ============================================
+  
+  static const double radiusXS = 4;
+  static const double radiusSMVal = 8;
+  static const double radiusMDVal = 12;
+  static const double radiusLGVal = 16;
+  static const double radiusXLVal = 20;
+  static const double radiusFullVal = 999;
+  
+  @override
+  double get radiusSM => radiusXS; // 4
+  @override
+  double get radiusMD => radiusSMVal; // 8
+  @override
+  double get radiusLG => radiusMDVal; // 12
+  @override
+  double get radiusXL => radiusLGVal; // 16
+  @override
+  double get radiusFull => radiusFullVal; // 999
+
+  // ============================================
+  // BORDER WIDTH (from primitives.tokens.json)
+  // none: 0, thin: 1, regular: 1.5, thick: 2
+  // ============================================
+  
+  static const double borderNone = 0;
+  static const double borderThin = 1;
+  static const double borderRegular = 1.5;
+  static const double borderThick = 2;
+
+  // ============================================
+  // TYPOGRAPHY (from Mode_1.tokens.json)
+  // Family: Satoshi Variable
+  // Weights: regular(420), medium(500), bold(700), extra-bold(800)
+  // Sizes: 10, 12, 14, 16, 20, 24
+  // Line Heights: xs(12), sm(16), md(20), lg(24), xl(28), 2xl(32)
+  // Letter Spacing: Normal(0), Tight(-0.1)
+  // ============================================
+  
   static const _fontFamily = 'Satoshi Variable';
+  static const _spacingTight = -0.1;
 
-  /// H1: 24px, Weight 800, LS -0.42%
+  /// H1: 24px, 800, line-height 32
   @override
   TextStyle get h1 => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w800,
         fontSize: 24,
-        height: 1.333,
-        letterSpacing: -0.1, // -0.42% of 24
+        height: 32 / 24,
+        letterSpacing: _spacingTight,
       );
 
-  /// H2: 20px, Weight 700
+  /// H2: 20px, 700, line-height 28
   @override
   TextStyle get h2 => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 20,
-        height: 1.4,
+        height: 28 / 20,
       );
 
-  /// Headline Bold: 16px, Weight 700, LS -0.625%
+  /// Headline Bold: 16px, 700, line-height 24
   @override
   TextStyle get headlineBold => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 16,
-        height: 1.5,
-        letterSpacing: -0.1, // -0.625% of 16
+        height: 24 / 16,
+        letterSpacing: _spacingTight,
       );
 
-  /// Headline Medium: 16px, Weight 500, LS -0.625%
+  /// Headline Medium: 16px, 500, line-height 24
   @override
   TextStyle get headlineMedium => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w500,
         fontSize: 16,
-        height: 1.5,
-        letterSpacing: -0.1,
+        height: 24 / 16,
+        letterSpacing: _spacingTight,
       );
 
-  /// Subtitle Bold: 14px, Weight 700, LS -0.714%
+  /// Subtitle Bold: 14px, 700, line-height 20
   @override
   TextStyle get subtitleBold => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 14,
-        height: 1.43,
-        letterSpacing: -0.1,
+        height: 20 / 14,
+        letterSpacing: _spacingTight,
       );
 
-  /// Subtitle Medium: 14px, Weight 500, LS -0.714%
+  /// Subtitle Medium: 14px, 500, line-height 20
   @override
   TextStyle get subtitleMedium => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w500,
         fontSize: 14,
-        height: 1.43,
-        letterSpacing: -0.1,
+        height: 20 / 14,
+        letterSpacing: _spacingTight,
       );
 
-  /// Subtitle Regular: 14px, Weight 420, LS -0.714%
+  /// Subtitle Regular: 14px, 420, line-height 20
   @override
   TextStyle get subtitleRegular => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w400,
         fontSize: 14,
-        height: 1.43,
-        letterSpacing: -0.1,
+        height: 20 / 14,
+        letterSpacing: _spacingTight,
       );
 
-  /// Body Bold: 12px, Weight 700, LS -0.833%
+  /// Body Bold: 12px, 700, line-height 16
   @override
   TextStyle get bodyBold => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w700,
         fontSize: 12,
-        height: 1.33,
-        letterSpacing: -0.1,
+        height: 16 / 12,
+        letterSpacing: _spacingTight,
       );
 
-  /// Body Medium: 12px, Weight 500, LS -0.833%
+  /// Body Medium: 12px, 500, line-height 16
   @override
   TextStyle get bodyMedium => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w500,
         fontSize: 12,
-        height: 1.33,
-        letterSpacing: -0.1,
+        height: 16 / 12,
+        letterSpacing: _spacingTight,
       );
 
-  /// Body Regular: 12px, Weight 420, LS -0.833%
+  /// Body Regular: 12px, 420, line-height 16
   @override
   TextStyle get bodyRegular => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w400,
         fontSize: 12,
-        height: 1.33,
-        letterSpacing: -0.1,
+        height: 16 / 12,
+        letterSpacing: _spacingTight,
       );
 
-  /// Caption: 10px, Weight 420
+  /// Caption: 10px, 420, line-height 12
   @override
   TextStyle get caption => const TextStyle(
         fontFamily: _fontFamily,
         fontWeight: FontWeight.w400,
         fontSize: 10,
-        height: 1.2,
+        height: 12 / 10,
       );
 
   // ============================================
   // EFFECTS
   // ============================================
   
-  /// Card Shadow: 0px 4px 4px rgba(107, 114, 133, 0.02)
   @override
   BoxShadow get cardShadow => BoxShadow(
-        color: const Color(0xFF6B7285).withOpacity(0.02),
+        color: grey.withOpacity(0.02),
         offset: const Offset(0, 4),
         blurRadius: 4,
       );
 
-  /// Focus Blue: 0px 0px 0px 3px rgba(37, 84, 212, 0.1)
   @override
   BoxShadow get focusShadow => BoxShadow(
-        color: mfBlue.withOpacity(0.1),
+        color: brandBlue.withOpacity(0.1),
         offset: Offset.zero,
         blurRadius: 0,
         spreadRadius: 3,
       );
 
-  /// Focus Red: 0px 0px 0px 3px rgba(234, 67, 53, 0.1)
   BoxShadow get focusRedShadow => BoxShadow(
-        color: mfRed.withOpacity(0.1),
+        color: red.withOpacity(0.1),
         offset: Offset.zero,
         blurRadius: 0,
         spreadRadius: 3,
       );
 
   // ============================================
-  // KEYSTONE SPECIFIC
+  // COMPONENT TOKENS
   // ============================================
   
   @override
-  double get buttonRadius => 12;
+  double get buttonRadius => radiusMDVal; // 12
   
-  /// Secondary button border
+  @override
+  double get buttonHeight => 52;
+  
+  @override
+  double get buttonHeightMedium => 48;
+  
   Border get secondaryButtonBorder => Border.all(
-        color: mfBlue10,
-        width: 1.5,
+        color: brandBlue10,
+        width: borderRegular,
       );
 }
