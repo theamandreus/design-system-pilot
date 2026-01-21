@@ -77,6 +77,18 @@ class VerifyOtpScreen extends StatelessWidget {
                   
                   const SizedBox(height: 24),
                   
+                  // IIFL Balance Card
+                  const Center(
+                    child: PlanCard(
+                      state: PlanCardState.populated,
+                      title: 'IIFL Balance',
+                      amount: '₹25,000.00',
+                      subtitle: 'Available balance',
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
                   // PlanCard 1
                   const Center(
                     child: PlanCard(
