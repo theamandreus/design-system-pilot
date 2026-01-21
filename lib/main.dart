@@ -67,6 +67,8 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
         return 'Error';
       case PlanCardState.success:
         return 'Success';
+      case PlanCardState.disabled:
+        return 'Disabled';
     }
   }
 
@@ -78,8 +80,6 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
         return 'Outlined';
       case DSButtonVariant.destructive:
         return 'Destructive';
-      case DSButtonVariant.inactive:
-        return 'Inactive';
     }
   }
 
@@ -109,9 +109,7 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                     state: _currentCardState,
                     title: 'Hybrid Fund',
                     amount: '₹12,450.00',
-                    subtitle: _currentCardState == PlanCardState.success 
-                        ? 'Wow ! You made Profit' 
-                        : '+12.4% returns this year',
+                    subtitle: '+12.4% returns this year',
                     onTap: _cycleCardState,
                   ),
                   const SizedBox(height: 16),
@@ -174,12 +172,6 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                   DSButton(
                     label: 'Destructive Button',
                     variant: DSButtonVariant.destructive,
-                    onTap: () {},
-                  ),
-                  const SizedBox(height: 12),
-                  DSButton(
-                    label: 'Inactive Button',
-                    variant: DSButtonVariant.inactive,
                     onTap: () {},
                   ),
                 ],

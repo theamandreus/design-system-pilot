@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'ds_button.dart';
 
 /// PlanCard state enumeration
 enum PlanCardState {
@@ -9,6 +8,7 @@ enum PlanCardState {
   selected,
   error,
   success,
+  disabled,
 }
 
 /// PlanCard component from Design System
@@ -21,9 +21,7 @@ class PlanCard extends StatelessWidget {
   final String? title;
   final String? amount;
   final String? subtitle;
-  final String? buttonLabel;
   final VoidCallback? onTap;
-  final VoidCallback? onButtonTap;
 
   const PlanCard({
     super.key,
@@ -31,9 +29,7 @@ class PlanCard extends StatelessWidget {
     this.title,
     this.amount,
     this.subtitle,
-    this.buttonLabel,
     this.onTap,
-    this.onButtonTap,
   });
 
   // Design tokens from Figma
@@ -44,6 +40,7 @@ class PlanCard extends StatelessWidget {
 
   // Colors
   static const _bgColor = Color(0xFFFFFFFF);
+  static const _bgDisabled = Color(0xFF6B6B6B);
   static const _borderDefault = Color(0xFFE0E0E0);
   static const _borderSelected = Color(0xFF6200EE);
   static const _borderError = Color(0xFFB3261E);
@@ -51,17 +48,18 @@ class PlanCard extends StatelessWidget {
   static const _textSecondary = Color(0xFF6B6B6B);
   static const _textError = Color(0xFFB3261E);
   static const _textSuccess = Color(0xFF6200EE);
+  static const _textDisabled = Color(0xFFE0E0E0);
   static const _skeletonColor = Color(0xFFE0E0E0);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: state == PlanCardState.disabled ? null : onTap,
       child: Container(
         width: _cardWidth,
         padding: const EdgeInsets.all(_padding),
         decoration: BoxDecoration(
-          color: _bgColor,
+          color: _getBackgroundColor(),
           borderRadius: BorderRadius.circular(_borderRadius),
           border: Border.all(
             color: _getBorderColor(),
@@ -72,6 +70,10 @@ class PlanCard extends StatelessWidget {
         child: _buildContent(),
       ),
     );
+  }
+
+  Color _getBackgroundColor() {
+    return state == PlanCardState.disabled ? _bgDisabled : _bgColor;
   }
 
   Color _getBorderColor() {
@@ -99,6 +101,8 @@ class PlanCard extends StatelessWidget {
         return _buildErrorState();
       case PlanCardState.success:
         return _buildSuccessState();
+      case PlanCardState.disabled:
+        return _buildDisabledState();
       case PlanCardState.populated:
       case PlanCardState.selected:
         return _buildPopulatedState();
@@ -141,13 +145,6 @@ class PlanCard extends StatelessWidget {
             height: 1.428,
             color: _textSecondary,
           ),
-        ),
-        const SizedBox(height: _gap),
-        DSButton(
-          label: buttonLabel ?? 'Button Label',
-          variant: DSButtonVariant.outlined,
-          width: 288,
-          onTap: onButtonTap,
         ),
       ],
     );
@@ -305,6 +302,47 @@ class PlanCard extends StatelessWidget {
             fontSize: 14,
             height: 1.428,
             color: _textSuccess,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDisabledState() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          title ?? 'Hybrid Fund',
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+            height: 1.125,
+            color: _textPrimary,
+          ),
+        ),
+        const SizedBox(height: _gap),
+        Text(
+          amount ?? '₹12,450.00',
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w700,
+            fontSize: 24,
+            height: 1.208,
+            color: _textPrimary,
+          ),
+        ),
+        const SizedBox(height: _gap),
+        const Text(
+          'Disabled',
+          style: TextStyle(
+            fontFamily: 'Inter',
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            height: 1.428,
+            color: _textDisabled,
           ),
         ),
       ],
