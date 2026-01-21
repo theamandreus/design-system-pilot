@@ -44,12 +44,7 @@ class _MainNavigationState extends State<MainNavigation> {
           VerifyOtpScreen(
             onPrimaryButtonTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Login Now tapped!')),
-              );
-            },
-            onSecondaryButtonTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Create New Account tapped!')),
+                const SnackBar(content: Text('Verify Now tapped!')),
               );
             },
           ),
