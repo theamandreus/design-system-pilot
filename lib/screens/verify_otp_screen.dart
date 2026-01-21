@@ -5,11 +5,13 @@ import '../ds_button.dart';
 ///
 /// Figma: https://www.figma.com/design/cmgj79bpLI0KBt9mpl5oJb/Design-System---Pilot?node-id=60-185
 class VerifyOtpScreen extends StatelessWidget {
-  final VoidCallback? onButtonTap;
+  final VoidCallback? onPrimaryButtonTap;
+  final VoidCallback? onSecondaryButtonTap;
 
   const VerifyOtpScreen({
     super.key,
-    this.onButtonTap,
+    this.onPrimaryButtonTap,
+    this.onSecondaryButtonTap,
   });
 
   // Colors from Figma
@@ -85,11 +87,22 @@ class VerifyOtpScreen extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             color: _topBarColor,
-            child: DSButton(
-              label: 'Button Label',
-              variant: DSButtonVariant.filled,
-              width: double.infinity,
-              onTap: onButtonTap,
+            child: Column(
+              children: [
+                DSButton(
+                  label: 'Login Now',
+                  variant: DSButtonVariant.filled,
+                  width: double.infinity,
+                  onTap: onPrimaryButtonTap,
+                ),
+                const SizedBox(height: 12),
+                DSButton(
+                  label: 'Create New Account',
+                  variant: DSButtonVariant.outlined,
+                  width: double.infinity,
+                  onTap: onSecondaryButtonTap,
+                ),
+              ],
             ),
           ),
         ],
