@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'plan_card.dart';
 import 'ds_button.dart';
+import 'screens/verify_otp_screen.dart';
 
 void main() {
   runApp(const DesignSystemDemo());
@@ -18,7 +19,54 @@ class DesignSystemDemo extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6200EE)),
         useMaterial3: true,
       ),
-      home: const ComponentsDemo(),
+      home: const MainNavigation(),
+    );
+  }
+}
+
+class MainNavigation extends StatefulWidget {
+  const MainNavigation({super.key});
+
+  @override
+  State<MainNavigation> createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> {
+  int _currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          const ComponentsDemo(),
+          VerifyOtpScreen(
+            onButtonTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Button tapped!')),
+              );
+            },
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
+        selectedItemColor: const Color(0xFF6200EE),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.widgets_outlined),
+            activeIcon: Icon(Icons.widgets),
+            label: 'Components',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.phone_android_outlined),
+            activeIcon: Icon(Icons.phone_android),
+            label: 'Screens',
+          ),
+        ],
+      ),
     );
   }
 }
@@ -80,6 +128,8 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
         return 'Outlined';
       case DSButtonVariant.destructive:
         return 'Destructive';
+      case DSButtonVariant.inactive:
+        return 'Inactive';
     }
   }
 
@@ -172,6 +222,12 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
                   DSButton(
                     label: 'Destructive Button',
                     variant: DSButtonVariant.destructive,
+                    onTap: () {},
+                  ),
+                  const SizedBox(height: 12),
+                  DSButton(
+                    label: 'Inactive Button',
+                    variant: DSButtonVariant.inactive,
                     onTap: () {},
                   ),
                 ],
