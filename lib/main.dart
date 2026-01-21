@@ -172,41 +172,15 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
         backgroundColor: theme.primary,
         foregroundColor: theme.onPrimary,
         actions: [
-          // Theme Switcher
+          // Theme Switcher - Simple toggle buttons
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: SegmentedButton<ThemeType>(
-              segments: const [
-                ButtonSegment(
-                  value: ThemeType.pilot,
-                  label: Text('Pilot', style: TextStyle(fontSize: 11)),
-                ),
-                ButtonSegment(
-                  value: ThemeType.keystone,
-                  label: Text('Keystone', style: TextStyle(fontSize: 11)),
-                ),
+            child: Row(
+              children: [
+                _buildThemeToggle('Pilot', ThemeType.pilot, currentThemeType, theme, context),
+                const SizedBox(width: 4),
+                _buildThemeToggle('Keystone', ThemeType.keystone, currentThemeType, theme, context),
               ],
-              selected: {currentThemeType},
-              onSelectionChanged: (selected) {
-                context.setTheme(selected.first);
-              },
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith((states) {
-                  if (states.contains(WidgetState.selected)) {
-                    return theme.onPrimary;
-                  }
-                  return theme.primary;
-                }),
-                foregroundColor: WidgetStateProperty.resolveWith((states) {
-                  if (states.contains(WidgetState.selected)) {
-                    return theme.primary;
-                  }
-                  return theme.onPrimary;
-                }),
-                side: WidgetStateProperty.all(
-                  BorderSide(color: theme.onPrimary.withOpacity(0.3)),
-                ),
-              ),
             ),
           ),
         ],
@@ -337,6 +311,32 @@ class _ComponentsDemoState extends State<ComponentsDemo> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThemeToggle(String label, ThemeType type, ThemeType current, AppTheme theme, BuildContext context) {
+    final isSelected = type == current;
+    return GestureDetector(
+      onTap: () => context.setTheme(type),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? theme.onPrimary : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: theme.onPrimary.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: isSelected ? theme.primary : theme.onPrimary,
+          ),
         ),
       ),
     );
