@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../ds_button.dart';
+import '../plan_card.dart';
 
 /// Verify OTP Screen from Design System
 ///
@@ -73,6 +74,18 @@ class VerifyOtpScreen extends StatelessWidget {
                       height: 1.35,
                       letterSpacing: -0.1,
                       color: _textSecondary,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // PlanCard
+                  const Center(
+                    child: PlanCard(
+                      state: PlanCardState.populated,
+                      title: 'Hybrid Fund',
+                      amount: '₹12,450.00',
+                      subtitle: '+12.4% returns this year',
                     ),
                   ),
                   
